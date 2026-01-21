@@ -52,7 +52,35 @@ const server = http.createServer((req, res) => {
     apiReq.end(data); // Send request
   } 
   
-  // 3. Fallback
+// 3. LEAD CAPTURE (Send to N8N)
+  else if (req.url === '/api/join') {
+    let body = '';
+    req.on('data', chunk => body += chunk);
+    req.on('end', () => {
+        const n8nReq = https.request({
+            hostname: 'n8n.srv1238670.hstgr.cloud',
+            path: '/webhook-test/02c9ff28-4f02-4bb5-8760-c49a574d8e12',
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Content-Length': body.length
+            }
+        }, (n8nRes) => {
+            res.writeHead(200, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ status: 'sent' }));
+        });
+        
+        n8nReq.on('error', (e) => {
+            console.error(e);
+            res.writeHead(500);
+            res.end(JSON.stringify({ error: 'N8N unreachable' }));
+        });
+        n8nReq.write(body);
+        n8nReq.end();
+    });
+  }
+  
+  // 4. FALLBACK (404)
   else {
     res.writeHead(404);
     res.end("Not Found");
