@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FYIAI - Intelligence Unleashed</title>
+    <style>
+        :root { --bg: #0a0a0a; --text: #fff; --accent: #8b5cf6; }
+        body { margin:0; font-family: sans-serif; background: var(--bg); color: var(--text); padding: 2rem; }
+        .hero { text-align: center; padding: 4rem 1rem; }
+        h1 { font-size: 3.5rem; background: linear-gradient(to right, #fff, #888); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 1rem; }
+        p { color: #888; font-size: 1.2rem; max-width: 600px; margin: 0 auto 3rem; }
+        .ai-box { background: rgba(255,255,255,0.05); padding: 2rem; border-radius: 20px; border: 1px solid #333; max-width: 600px; margin: 0 auto; }
+        .output { min-height: 80px; font-size: 1.1rem; color: #ddd; margin-bottom: 2rem; font-style: italic; }
+        button { background: var(--accent); color: white; border: none; padding: 1rem 2rem; border-radius: 50px; font-size: 1rem; cursor: pointer; transition: 0.2s; }
+        button:hover { transform: scale(1.05); }
+        .form { margin-top: 4rem; padding-top: 2rem; border-top: 1px solid #222; text-align: center; }
+        input { padding: 1rem; border-radius: 8px; border: 1px solid #333; background: #111; color: white; width: 250px; }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <h1>Intelligence,<br>Unleashed.</h1>
+        <p>Experience the next generation of AI web solutions. Powered by Antigravity.</p>
+        
+        <div class="ai-box">
+            <div id="ai-output" class="output">"Click the button to see what Antigravity thinks..."</div>
+            <button onclick="generate()">✨ Generate Live Message</button>
+        </div>
+        <div class="form">
+            <h3>Get Early Access</h3>
+            <form id="leadForm" style="display:flex; gap:10px; justify-content:center;">
+                <input type="email" id="email" placeholder="Enter your email" required>
+                <button type="submit" style="background: white; color: black;">Join</button>
+            </form>
+        </div>
+    </div>
+    <script>
+        async function generate() {
+            const out = document.getElementById('ai-output');
+            out.innerText = "Thinking...";
+            try {
+                const res = await fetch('/api/generate'); 
+                const data = await res.json();
+                out.innerText = `"${data.text}"`;
+            } catch(e) { out.innerText = "Error: System busy."; }
+        }
+        document.getElementById('leadForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            // TODO: Send to N8N here
+            alert("Thanks! We caught your email: " + email);
+        });
+    </script>
+</body>
+</html>
