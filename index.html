@@ -58,12 +58,11 @@ document.getElementById('leadForm').addEventListener('submit', async (e) => {
         // Note: We use 'no-cors' mode because usually browsers block direct cross-origin posts to N8N webhooks unless N8N is configured for it. 
         // But 'no-cors' means we won't see the response, effectively "Fire and Forget".
         
-        await fetch("https://n8n.srv1238670.hstgr.cloud/webhook-test/02c9ff28-4f02-4bb5-8760-c49a574d8e12", {
-            method: 'POST',
-            body: JSON.stringify({ email: email, source: 'antigravity-landing' }),
-            headers: { 'Content-Type': 'application/json' },
-            mode: 'no-cors' 
-        });
+    await fetch("/api/join", {  // <-- Sending to our own server now
+    method: 'POST',
+    body: JSON.stringify({ email: email }),
+    headers: { 'Content-Type': 'application/json' }
+ });
         // Success Message
         alert("Success! You're on the list. Watch your inbox.");
         btn.innerText = "Joined ✅";
